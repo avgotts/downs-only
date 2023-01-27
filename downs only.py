@@ -7,11 +7,12 @@ Created on Thu Mar 14 23:44:21 2019
 
 import puz # https://github.com/alexdej/puzpy
 from collections import defaultdict
+import fnmatch
+import os
 
-pzzle = "aaaaaa.puz"
-# default puzzle for testing. NYT puzzle from June 2018 that I renamed
+
   
-def downs(puzzle=pzzle):
+def downs(puzzle):
     p = puz.read(puzzle)
     n = p.clue_numbering()
     d = defaultdict(int)
@@ -32,6 +33,13 @@ def downs(puzzle=pzzle):
     for clue in n.across:
         j = clue["num"]
         p.clues[clue_num[j]] = "-"
-    p.save("downss.puz")
+    p.save("downs" + puzzle[:-4]+".puz")
     
-    
+def d_all():
+    #converts all the .puz files in the directory to downs-only
+    for file in os.listdir("."):
+        if fnmatch.fnmatch(file, "*.puz"):
+            downs(file)
+            
+if  __name__ == "__main__":
+    d_all()
